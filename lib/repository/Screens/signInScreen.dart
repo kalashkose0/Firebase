@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebasemain_1/repository/Screens/forgotPasswordScreen.dart';
 import 'package:firebasemain_1/repository/widgets/UiHelper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,18 @@ class _SignInScreenState extends State<SignInScreen> {
               controller: passwordcontroller,
               text: "Enter Password",
               iconData: Icons.lock),
+          Row(
+            children: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => forgotPasswordScreen()));
+                  },
+                  child: Text("Forgot password"))
+            ],
+          ),
           SizedBox(
             height: 20,
           ),
