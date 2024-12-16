@@ -1,18 +1,19 @@
 import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebasemain_1/repository/Screens/signInScreen.dart';
 import 'package:firebasemain_1/repository/widgets/UiHelper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-class signUpScreen extends StatefulWidget {
-  const signUpScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  State<signUpScreen> createState() => _signUpScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _signUpScreenState extends State<signUpScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
 
@@ -20,7 +21,7 @@ class _signUpScreenState extends State<signUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up Screen"),
+        title: Text("Sign In Screen"),
         centerTitle: true,
       ),
       body: Column(
@@ -28,39 +29,39 @@ class _signUpScreenState extends State<signUpScreen> {
         children: [
           UiHelper.CustomTextField(
               controller: emailcontroller,
-              text: "Enter email",
-              iconData: Icons.email_outlined),
+              text: "Enter Email",
+              iconData: Icons.mail),
           UiHelper.CustomTextField(
               controller: passwordcontroller,
-              text: "Enter Paswword",
-              iconData: Icons.lock_open),
+              text: "Enter Password",
+              iconData: Icons.lock),
           SizedBox(
             height: 20,
           ),
           ElevatedButton(
               onPressed: () {
-                signup(
+                signIn(
                     email: emailcontroller.text.toString(),
                     password: passwordcontroller.text.toString());
               },
-              child: Text("Sign up"))
+              child: Text("SignIn"))
         ],
       ),
     );
   }
 
-  signup({required String email, required String password}) async {
+  signIn({required String email, required String password}) async {
     if (email == "" || password == "") {
       return UiHelper.CustomSnackBar(
-          text: "Enter email or password", context: context);
+          text: "Enter email & password", context: context);
     } else {
-      UserCredential? userCredential;
+      UserCredential? Usercredential;
       try {
-        userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password)
+        Usercredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password)
             .then((value) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SignInScreen()));
+          return UiHelper.CustomSnackBar(
+              text: value.user!.email.toString(), context: context);
         });
       } on FirebaseAuthException catch (ex) {
         return UiHelper.CustomSnackBar(
